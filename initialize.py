@@ -34,7 +34,7 @@ def initialize_weights(filter_size, input_channels, output_channels, initializat
 # essentially allowing the neural network to learn and represent patterns that are independent of the input values
 # biases are usually randonly initialized to small constants or zero values randomly and updated by back propagation during training
 
-def initializa_biases(output_channels):
+def initialize_biases(output_channels):
     return np.zeros((output_channels,))
 
 
