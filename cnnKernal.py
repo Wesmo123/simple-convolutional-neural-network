@@ -2,8 +2,12 @@ import numpy as np
 import initialize
 
 class cnnKernal:    #class for the cnn's kernals, allows easy access to an kernals entire structure easily and stores all the layers in one place
-    def __init__(self, initArr, ksize, ichannel, kernalNo): 
-        
+    def __init__(self, initArr, bias, ksize, ichannel, kernalNo): 
+        self.bias = bias
+        self.size = ksize   # size of the kernal represented by an integer, ie ksize = 3 means that the kernal is 3x3
+        self.kernalNo = kernalNo    #number of the kernal in the layer
+        self.depth = ichannel   # how many input layers are expected and the subsequent depth of the kernal matrix
+
         if(ichannel == 1):  # edge case check for if there is only 1 input channel
             self.kArray = np.zeros((1,ksize))   #creates a place holder zero array to allow the array to not automatically flatten
         else:   # else carry on as usual
@@ -26,7 +30,32 @@ class cnnKernal:    #class for the cnn's kernals, allows easy access to an kerna
                     newKernalRow = np.delete(newKernalRow, (0), axis=0)     #deletes the placeholder 0 array that is used to keep the shape of newKernalRow
                     self.kArray = newKernalRow[np.newaxis, :]   # in the case where there is only 1 input channel simply sets the kArray to the newKernalRow
 
-    def print(self):    #simply prints the stored kArray
+    def print(self):    #simply prints the stored 
         print(self.kArray)
-                    
+
+    def channelSeparator(self, inputmap):   # seperate the input channels into seperate arrays and stores them in a list
+
+        channelArrays = [inputmap[:, :, i] for i in range(self.depth)]
+
+        return channelArrays
+
+    def convolve(self, inputMap, mapdim1, mapdim2): # convolution operation, HAS NO STRIDING OR PADDING OPTIONS
+
+        container = np.zeros((1, mapdim2 - (self.size - 1))) # container for outputmap, will NOT work with striding (3d, rows , coloumns)
+        for steps in range(0, mapdim1 - (self.size - 1)): # calculates the number of rows in the output map and uses them to tell the kernal when to "step down" to the next layer, WILL NOT WORK WITH STRIDING
+            rowcontainer = np.array([])
+            for coloumnL in range(0, mapdim2 - (self.size - 1)):    # tracks the back end of the kernal to know when to stop and step down
+                if self.depth != 1:
+                    convolve = 0
+                    for iter in range(0, self.depth):
+                        convolve = convolve + np.sum(inputMap[iter][0 + steps : self.size + steps, 0 + coloumnL : self.size + coloumnL] * self.kArray[iter])
+                    convolve = convolve + self.bias[self.kernalNo]
+                    rowcontainer = np.append(rowcontainer, convolve)
+
+            container = np.vstack((container, rowcontainer))
+
+        container = np.delete(container, (0), axis=0)
+        return container
+
+
         
