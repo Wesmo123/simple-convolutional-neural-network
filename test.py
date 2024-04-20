@@ -10,7 +10,7 @@ two = np.array([[0,1,0], [1,0,1]])
 #print(np.sum(one*two))
 #print(train_x_orig[0])
 
-kern = cnnKernal.cnnKernal(initialize.initialize_weights(3, 3,  16,'random'), initialize.initialize_biases(16), 3 , 3 , 0)
+kern = cnnKernal.cnnKernal(initialize.initialize_weights(3, 3,  16,'random'), initialize.initialize_biases(16), 3 , 3 , 0, 'true')
 
 #print(kern.print())
 
@@ -47,7 +47,7 @@ def convolve(inputMap, mapdim1, mapdim2):
     container = np.delete(container, (0), axis=0)
     return container
 
-print(kern.convolve(kern.channelSeparator(train_x_orig[0]), 64, 64))
+#print(kern.convolve(kern.channelSeparator(train_x_orig[0]), 64, 64))
 
 
 

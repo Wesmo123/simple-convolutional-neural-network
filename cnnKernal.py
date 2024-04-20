@@ -2,33 +2,40 @@ import numpy as np
 import initialize
 
 class cnnKernal:    #class for the cnn's kernals, allows easy access to an kernals entire structure easily and stores all the layers in one place
-    def __init__(self, initArr, bias, ksize, ichannel, kernalNo): 
-        self.bias = bias
-        self.size = ksize   # size of the kernal represented by an integer, ie ksize = 3 means that the kernal is 3x3
-        self.kernalNo = kernalNo    #number of the kernal in the layer
-        self.depth = ichannel   # how many input layers are expected and the subsequent depth of the kernal matrix
+    def __init__(self, initArr=0, bias=0, ksize=0, ichannel=0, kernalNo=0, pool='false'): 
 
-        if(ichannel == 1):  # edge case check for if there is only 1 input channel
-            self.kArray = np.zeros((1,ksize))   #creates a place holder zero array to allow the array to not automatically flatten
-        else:   # else carry on as usual
-            self.kArray = np.zeros((1, ksize, ksize))   #creates a place holder zero array to allow the array to not automatically flatten
+        if pool == 'false':
+            self.bias = bias
+            self.size = ksize   # size of the kernal represented by an integer, ie ksize = 3 means that the kernal is 3x3
+            self.kernalNo = kernalNo    #number of the kernal in the layer
+            self.depth = ichannel   # how many input layers are expected and the subsequent depth of the kernal matrix
 
-        for iterz in range(ichannel):   # function is carried out for however many input channels there are
-            newKernalRow = np.zeros((1, ksize)) #creates a place holder zero array to allow vstacking and for the array to not automatically flatten
-            if(iterz == ichannel - 1):  #check when the function is about to complete and deletes the place holder zero array if it is true
-                self.kArray = np.delete(self.kArray, (0), axis=0)   
+            if(ichannel == 1):  # edge case check for if there is only 1 input channel
+                self.kArray = np.zeros((1,ksize))   #creates a place holder zero array to allow the array to not automatically flatten
+            else:   # else carry on as usual
+                self.kArray = np.zeros((1, ksize, ksize))   #creates a place holder zero array to allow the array to not automatically flatten
 
-            for itery in range(ksize):  #iterates over the arrays within the initarray 2d section and stacks them with vstack
-                newKernalRow = np.vstack([newKernalRow, initArr[iterz, itery, :, kernalNo]])    
+            for iterz in range(ichannel):   # function is carried out for however many input channels there are
+                newKernalRow = np.zeros((1, ksize)) #creates a place holder zero array to allow vstacking and for the array to not automatically flatten
+                if(iterz == ichannel - 1):  #check when the function is about to complete and deletes the place holder zero array if it is true
+                    self.kArray = np.delete(self.kArray, (0), axis=0)   
 
-                if(itery == ksize - 1 and ichannel != 1): # check if function is ready to complete and if there is only 1 input channel
-                    newKernalRow = np.delete(newKernalRow, (0), axis=0) #deletes the placeholder 0 array that is used to keep the shape of newKernalRow
-                    newKernalRow = newKernalRow[np.newaxis, :] # makes the newKernalArray 3d
-                    self.kArray = np.concatenate((self.kArray, newKernalRow))   # appends the newKernalArray to the existing kArray
+                for itery in range(ksize):  #iterates over the arrays within the initarray 2d section and stacks them with vstack
+                    newKernalRow = np.vstack([newKernalRow, initArr[iterz, itery, :, kernalNo]])    
 
-                elif(itery == ksize -1 and ichannel == 1):  # check if function is ready to complete and if there is only 1 input channel
-                    newKernalRow = np.delete(newKernalRow, (0), axis=0)     #deletes the placeholder 0 array that is used to keep the shape of newKernalRow
-                    self.kArray = newKernalRow[np.newaxis, :]   # in the case where there is only 1 input channel simply sets the kArray to the newKernalRow
+                    if(itery == ksize - 1 and ichannel != 1): # check if function is ready to complete and if there is only 1 input channel
+                        newKernalRow = np.delete(newKernalRow, (0), axis=0) #deletes the placeholder 0 array that is used to keep the shape of newKernalRow
+                        newKernalRow = newKernalRow[np.newaxis, :] # makes the newKernalArray 3d
+                        self.kArray = np.concatenate((self.kArray, newKernalRow))   # appends the newKernalArray to the existing kArray
+
+                    elif(itery == ksize -1 and ichannel == 1):  # check if function is ready to complete and if there is only 1 input channel
+                        newKernalRow = np.delete(newKernalRow, (0), axis=0)     #deletes the placeholder 0 array that is used to keep the shape of newKernalRow
+                        self.kArray = newKernalRow[np.newaxis, :]   # in the case where there is only 1 input channel simply sets the kArray to the newKernalRow
+
+        elif pool == 'true':
+            self.size = ksize
+            self.depth = ichannel
+            self.kernalNo = kernalNo
 
     def print(self):    #simply prints the stored 
         print(self.kArray)
@@ -56,3 +63,6 @@ class cnnKernal:    #class for the cnn's kernals, allows easy access to an kerna
 
         container = np.delete(container, (0), axis=0)   # deletes the placeholder zero array used to keep the containers shape
         return container
+    
+    def maxPool(self, inputMap, mapdim1, mapDim2):
+        print("pool stub")
