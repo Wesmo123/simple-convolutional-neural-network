@@ -66,3 +66,6 @@ class cnnKernal:    #class for the cnn's kernals, allows easy access to an kerna
     
     def maxPool(self, inputMap, mapdim1, mapDim2):
         print("pool stub")
+
+    def activationFunction(self):
+        print("activationFunction")
