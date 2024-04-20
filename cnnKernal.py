@@ -69,3 +69,8 @@ class cnnKernal:    #class for the cnn's kernals, allows easy access to an kerna
 
     def activationFunction(self):
         print("activationFunction")
+
+        #TODO:  finish maxPool method
+        #       finish activationFunction method
+        #       Implement Stride and Padding capabilities
+        #       Implement 1x1 kernal functionality
