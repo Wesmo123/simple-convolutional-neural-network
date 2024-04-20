@@ -52,7 +52,7 @@ class cnnKernal:    #class for the cnn's kernals, allows easy access to an kerna
         for steps in range(0, mapdim1 - (self.size - 1)): # calculates the number of rows in the output map and uses them to tell the kernal when to "step down" to the next layer, WILL NOT WORK WITH STRIDING
             rowcontainer = np.array([]) # container for the convolved rows before they are added to the final feature map array
             for coloumnL in range(0, mapdim2 - (self.size - 1)):    # tracks the back end of the kernal to know when to stop and step down
-                if self.depth != 1:
+                if self.depth != 1: # makes sure that there is atleast 2 layers
                     convolve = 0
                     for iter in range(0, self.depth):   #performs the convolution operation for however many layers there are
                         convolve = convolve + np.sum(inputMap[iter][0 + steps : self.size + steps, 0 + coloumnL : self.size + coloumnL] * self.kArray[iter])    #the convolution operation done by elementwise multiplication
