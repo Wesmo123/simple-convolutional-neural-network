@@ -1,5 +1,4 @@
 import numpy as np
-import initialize
 
 class cnnKernal:    #class for the cnn's kernals, allows easy access to an kernals entire structure easily and stores all the layers in one place
     def __init__(self, initArr=0, bias=0, ksize=0, ichannel=0, kernalNo=0, pool='false'): 

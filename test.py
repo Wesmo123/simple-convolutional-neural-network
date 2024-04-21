@@ -2,6 +2,7 @@ import numpy as np
 import initialize
 import cnnKernal
 from dataloader import load_data
+import layer
 
 train_x_orig, train_y, test_x_orig, test_y, classes = load_data()
 
@@ -47,6 +48,9 @@ def convolve(inputMap, mapdim1, mapdim2):
     container = np.delete(container, (0), axis=0)
     return container
 
+newlayer = layer.layer('false', 16, 3, 3, 16, 'random')
+for iter in newlayer.kernalList:
+    print(iter.kernalNo)
 #print(kern.convolve(kern.channelSeparator(train_x_orig[0]), 64, 64))
 
 

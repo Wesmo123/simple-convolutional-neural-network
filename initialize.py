@@ -20,10 +20,10 @@ def initialize_weights(filter_size, input_channels, output_channels, initializat
         return np.random.randn(input_channels, filter_size, filter_size, output_channels)
     elif initialization == 'xavier':
         stddev = np.sqrt(2 / (input_channels + output_channels))
-        return np.random.randn(filter_size, filter_size, input_channels, output_channels) * stddev
+        return np.random.randn(input_channels, filter_size, filter_size, output_channels) * stddev
     elif initialization == 'he':
         stddev = np.sqrt(2 / input_channels)
-        return np.random.randn(filter_size, filter_size, input_channels, output_channels) * stddev
+        return np.random.randn(input_channels, filter_size, filter_size, output_channels) * stddev
     else:
         raise ValueError("Invalid initialization method")
     
